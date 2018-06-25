@@ -7,6 +7,8 @@
 //  Revised from original author: Bart Jacobs
 
 import UIKit
+import CloudKit
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -39,6 +41,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShareMetadata) {
+        
+        let acceptSharingOp: CKAcceptSharesOperation = CKAcceptSharesOperation(shareMetadatas: [cloudKitShareMetadata])
+        
+        acceptSharingOp.qualityOfService = .userInteractive
+        acceptSharingOp.perShareCompletionBlock = {meta, share, error in
+            print("successfully shared")
+        }
+        acceptSharingOp.acceptSharesCompletionBlock = {
+            error in
+            /// Send your user to where they need to go in your app
+        }
+        CKContainer(identifier: cloudKitShareMetadata.containerIdentifier).add(acceptSharingOp)
     }
 
 

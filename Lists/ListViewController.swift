@@ -10,9 +10,7 @@ import UIKit
 import CloudKit
 import SVProgressHUD
 
-let SegueItemDetail = "ItemDetail"
-
-class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICloudSharingControllerDelegate{
     static let ItemCell = "ItemCell"
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageLabel: UILabel!
@@ -20,6 +18,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var list: CKRecord!
     var items = [CKRecord]()
+    var itemName: String?
     
     var selection: Int?
     
@@ -103,6 +102,25 @@ extension ListViewController{
     }
     
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = items[indexPath.row]
+        
+        let share = CKShare(rootRecord: item)
+        
+
+        if let itemName = item.object(forKey: "name") as? String {
+            self.itemName = item.object(forKey: "name") as? String
+            share[CKShareTitleKey] = "Sharing \(itemName)" as CKRecordValue?
+
+        } else {
+            share[CKShareTitleKey] = "" as CKRecordValue?
+            self.itemName = "item"
+        }
+        
+        share[CKShareTypeKey] = "com.doronkatz.List" as CKRecordValue
+        prepareToShare(share: share, record: item)
+    }
+    
     func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
         
@@ -110,7 +128,7 @@ extension ListViewController{
         selection = indexPath.row
         
         // Perform Segue
-        performSegue(withIdentifier: SegueItemDetail, sender: self)
+        performSegue(withIdentifier: SegueListDetail, sender: self)
     }
 
     
@@ -183,7 +201,7 @@ extension ListViewController{
         selection = indexPath.row
         
         // Perform Segue
-        performSegue(withIdentifier: "ListDetail", sender: self)
+        performSegue(withIdentifier: SegueListDetail, sender: self)
     }
     
     // MARK: -
@@ -193,7 +211,7 @@ extension ListViewController{
         guard let identifier = segue.identifier else { return }
         
         switch identifier {
-        case SegueItemDetail:
+        case SegueListDetail:
             // Fetch Destination View Controller
             let addItemViewController = segue.destination as! AddItemViewController
             
@@ -264,6 +282,7 @@ extension ListViewController: AddItemViewControllerDelegate{
         query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         
         // Perform Query
+        
         privateDatabase.perform(query, inZoneWith: nil) { (records, error) -> Void in
             DispatchQueue.main.sync {
                 self.processResponseForQuery(records, error: error)
@@ -298,6 +317,27 @@ extension ListViewController: AddItemViewControllerDelegate{
         updateView()
     }
     
+    private func prepareToShare(share: CKShare, record: CKRecord){
+        
+        let sharingViewController = UICloudSharingController(preparationHandler: {(UICloudSharingController, handler: @escaping (CKShare?, CKContainer?, Error?) -> Void) in
+   
+            let modRecordsList = CKModifyRecordsOperation(recordsToSave: [record, share], recordIDsToDelete: nil)
+            
+            modRecordsList.modifyRecordsCompletionBlock = {
+                (record, recordID, error) in
+                
+                handler(share, CKContainer.default(), error)
+            }
+            CKContainer.default().privateCloudDatabase.add(modRecordsList)
+        })
+        
+        sharingViewController.delegate = self
+
+        sharingViewController.availablePermissions = [.allowReadWrite,
+                                                  .allowPrivate]
+        self.navigationController?.present(sharingViewController, animated:true, completion:nil)
+    }
+    
     
     private func sortItems() {
         self.items.sort {
@@ -311,5 +351,25 @@ extension ListViewController: AddItemViewControllerDelegate{
             
             return result
         }
+    }
+}
+
+// MARK: -
+// MARK: CloudKiUICloudSharingDelegate methods
+extension ListViewController{
+    func cloudSharingControllerDidSaveShare(_ csc: UICloudSharingController) {
+        print("saved successfully")
+    }
+    
+    func cloudSharingController(_ csc: UICloudSharingController, failedToSaveShareWithError error: Error) {
+        print("failed to save: \(error.localizedDescription)")
+    }
+    
+    func itemThumbnailData(for csc: UICloudSharingController) -> Data? {
+        return nil //You can set a hero image in your share sheet. Nil uses the default.
+    }
+    
+    func itemTitle(for csc: UICloudSharingController) -> String? {
+        return self.itemName
     }
 }

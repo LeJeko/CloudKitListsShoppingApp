@@ -115,7 +115,6 @@
 				C48C7DC8208EB73000F08846 /* Frameworks */,
 				C48C7DC9208EB73000F08846 /* Resources */,
 				344A6A95C10CF44DA9470FC1 /* [CP] Embed Pods Frameworks */,
-				89EF0468A100C35425ECDADA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -197,21 +196,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Lists/Pods-Lists-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		89EF0468A100C35425ECDADA /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Lists/Pods-Lists-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DBDD87C1D11C7BC5E116C0B2 /* [CP] Check Pods Manifest.lock */ = {
@@ -392,10 +376,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UU98N6FWB5;
 				INFOPLIST_FILE = Lists/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.doronkatz.Lists;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -412,10 +393,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UU98N6FWB5;
 				INFOPLIST_FILE = Lists/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.doronkatz.Lists;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
