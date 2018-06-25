@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BIu-Be-QkZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14269.12" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BIu-Be-QkZ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14252.5"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -99,7 +99,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Name" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hA8-QD-FSx">
-                                <rect key="frame" x="20" y="318" width="335" height="30"/>
+                                <rect key="frame" x="20" y="318.5" width="335" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -140,7 +140,6 @@
         <!--List View Controller-->
         <scene sceneID="R59-IW-dET">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oam-vr-UVr" sceneMemberID="firstResponder"/>
                 <viewController id="GiB-6X-Nb5" customClass="ListViewController" customModule="Lists" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NfU-cn-i11">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -206,7 +205,7 @@
                     <navigationItem key="navigationItem" id="jxJ-8B-fnq">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="eYN-h2-gRx">
                             <connections>
-                                <segue destination="4H2-es-irB" kind="show" identifier="ItemDetail" id="mgc-WM-NQx"/>
+                                <segue destination="4H2-es-irB" kind="show" identifier="ListDetail" id="mgc-WM-NQx"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -217,6 +216,7 @@
                         <outlet property="tableView" destination="yiP-uM-LlS" id="2aQ-tU-s5E"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oam-vr-UVr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2013.5999999999999" y="907.1964017991005"/>
         </scene>
