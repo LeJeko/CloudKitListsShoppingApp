@@ -45,19 +45,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShareMetadata) {
         
-        let acceptSharingOp: CKAcceptSharesOperation = CKAcceptSharesOperation(shareMetadatas: [cloudKitShareMetadata])
+        let acceptSharing: CKAcceptSharesOperation = CKAcceptSharesOperation(shareMetadatas: [cloudKitShareMetadata])
         
-        acceptSharingOp.qualityOfService = .userInteractive
-        acceptSharingOp.perShareCompletionBlock = {meta, share, error in
+        acceptSharing.qualityOfService = .userInteractive
+        acceptSharing.perShareCompletionBlock = {meta, share, error in
             print("successfully shared")
         }
-        acceptSharingOp.acceptSharesCompletionBlock = {
+        acceptSharing.acceptSharesCompletionBlock = {
             error in
-            /// Send your user to where they need to go in your app
+            guard (error == nil) else{
+                print("Error \(error?.localizedDescription ?? "")")
+                return
+            }
+            
+            let viewController: AddItemViewController =
+                self.window?.rootViewController as! AddItemViewController
+            viewController.fetchShare(cloudKitShareMetadata)
+            
         }
-        CKContainer(identifier: cloudKitShareMetadata.containerIdentifier).add(acceptSharingOp)
+        CKContainer(identifier: cloudKitShareMetadata.containerIdentifier).add(acceptSharing)
     }
-
 
 }
 

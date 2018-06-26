@@ -154,3 +154,31 @@ class AddItemViewController: UIViewController {
     }
     
 }
+
+//Mark -
+// Method to fetch shared record
+extension AddItemViewController{
+    
+    func fetchShare(_ cloudKitShareMetadata: CKShareMetadata){
+        let op = CKFetchRecordsOperation(
+            recordIDs: [cloudKitShareMetadata.rootRecordID])
+        
+        op.perRecordCompletionBlock = { record, _, error in
+            guard error == nil, record != nil else{
+                print("error \(error?.localizedDescription ?? "")")
+                return
+            }
+            DispatchQueue.main.async {
+                self.item = record
+            }
+        }
+        op.fetchRecordsCompletionBlock = { _, error in
+            guard error != nil else{
+                print("error \(error?.localizedDescription ?? "")")
+                return
+            }
+        }
+        CKContainer.default().sharedCloudDatabase.add(op)
+    }
+    
+}
