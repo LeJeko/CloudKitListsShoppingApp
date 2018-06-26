@@ -92,6 +92,7 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 guard error == nil else{
                     print(error?.localizedDescription as Any)
+                    self.activityIndicatorView.stopAnimating()
                     return
                 }
                 
@@ -101,6 +102,7 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     self.tableView.reloadData()
                     self.messageLabel.text = ""
                     self.updateView()
+                    self.activityIndicatorView.stopAnimating()
                 }
             })
 
@@ -191,7 +193,8 @@ extension ListsViewController{
         
         // Save Selection
         selection = indexPath.row
-        
+        self.activityIndicatorView.stopAnimating()
+
         // Perform Segue
         performSegue(withIdentifier: SegueListDetail, sender: self)
     }
@@ -241,7 +244,8 @@ extension ListsViewController{
                 } else {
                     // Update Message Label
                     messageLabel.text = "No Records Found"
-                    
+                    self.activityIndicatorView.stopAnimating()
+
                     // Update View
                     updateView()
                 }

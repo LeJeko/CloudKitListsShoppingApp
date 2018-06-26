@@ -292,7 +292,8 @@ extension ListViewController: AddItemViewControllerDelegate{
     
     private func processResponseForQuery(_ records: [CKRecord]?, error: Error?) {
         var message = ""
-        
+        self.activityIndicatorView.stopAnimating()
+
         if let error = error {
             print(error)
             message = "Error Fetching Items for List"
